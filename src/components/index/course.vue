@@ -8,7 +8,7 @@
     </el-carousel>
     <!-- 我喜欢的课程 -->
     <div class="course-container">
-      <h2 class="section-title">我喜欢的课程</h2>
+      <h2 class="section-title">课程列表</h2>
       <div class="course-grid" 
       v-loading="loading" 
       element-loading-text="加载课程中...">

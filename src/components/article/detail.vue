@@ -1,10 +1,8 @@
 <template>
   <div class="detail-contain">
-    <!-- 返回按钮 -->
     <el-button @click="back" class="back-btn">
       返回文章列表
     </el-button>
-    <!-- 使用 v-loading 指令 -->
     <div 
       v-loading="loading" 
       class="content-container"
@@ -12,21 +10,17 @@
       element-loading-spinner="el-icon-loading"
       element-loading-background="rgba(255, 255, 255, 0.9)"
     >
-      <!-- 内容区域 -->
       <div class="article-header">
         <h2 class="article-title">{{ articleDetail?.title || "文章标题未获取" }}</h2>
         <div class="article-meta">
-          <span class="meta-item">
-            
+          <span class="meta-item">    
             作者：{{ userInfo?.username || "匿名用户" }}
           </span>
-          <span class="meta-item">
-           
+          <span class="meta-item"> 
             时间：{{ formatTime(articleDetail?.updateTime) }}
           </span>
         </div>
       </div>
-
       <div v-if="hasContent" class="article-content" v-html="formattedContent"></div>
       <div v-else class="empty-tip">暂无文章内容</div>
     </div>
@@ -38,13 +32,10 @@ import { ref, watch, computed } from "vue";
 import { articleInfo } from "@/api/article.js";
 import { getUserInfo } from "@/api/user";
 import { useRoute, useRouter } from "vue-router";
-import { ElLoading } from 'element-plus'; // 引入 Loading 组件
 import dayjs from "dayjs";
 // 路由相关
 const route = useRoute();
 const router = useRouter();
-const articleId = ref(route.params.id);
-
 // 状态管理
 const articleDetail = ref(null); // 文章详情
 const userInfo = ref(null); // 作者信息

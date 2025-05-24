@@ -14,7 +14,6 @@
         <template #default>
           <el-table-column prop="title" label="标题" width="300" />
           <el-table-column prop="createTime" label="发布日期" width="200" />
-          <el-table-column prop="summary" label="摘要" />
           <el-table-column>
             <template #default="{ row }">
               <el-button @click="handleArticleClick(row.id)"
@@ -122,9 +121,6 @@ const addForm=ref({
   title:'',
   content:''
 })
-const addButton=async()=>{
-
-}
 </script>
   
   <style scoped>
