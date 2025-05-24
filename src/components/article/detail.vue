@@ -1,8 +1,11 @@
 <template>
   <div class="detail-contain">
-    <el-button @click="back" class="back-btn">
-      返回文章列表
-    </el-button>
+    <el-breadcrumb separator="/" style="padding: 20px;">
+      <el-breadcrumb-item :to="{ path: '/index/article' }">文章列表</el-breadcrumb-item>
+      <el-breadcrumb-item>
+        文章详情
+      </el-breadcrumb-item>
+    </el-breadcrumb>
     <div 
       v-loading="loading" 
       class="content-container"
@@ -99,11 +102,6 @@ watch(
   { immediate: true } // 组件挂载时立即执行
 );
 
-// 返回列表页
-const back = () => {
-  router.push('/index/article'); // 使用命名路由（需在路由配置中定义）
-  // 或直接使用路径：router.push("/index/article");
-};
 </script>
 
 <style scoped>

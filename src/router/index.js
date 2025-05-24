@@ -6,6 +6,8 @@ import course from "@/components/index/course.vue";
 import article from "@/components/index/article.vue";
 import intro from "@/components/index/intro.vue";
 import articleDetail from "@/components/article/detail.vue";
+import addArticle from "@/components/article/add.vue";
+import userData from "@/components/user/userData.vue";
 
 const routes=[
     {
@@ -43,6 +45,16 @@ const routes=[
                 path:'articleDetail:id',
                 component:articleDetail,
                 name:'articleDetail'
+            },
+            {
+                path:'addArticle',
+                component:addArticle,
+                name:'addArticle'
+            },
+            {
+                path:'userData',
+                component:userData,
+                name:'userData'
             }
         ]
 

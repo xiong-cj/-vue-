@@ -4,6 +4,19 @@
       <div class="Collapse_button">
         <el-button @click="toggleCollapse">折叠</el-button>
       </div>
+      <div class="header-content">
+        <el-dropdown>
+          <span>用户名</span>
+          <template #dropdown>
+            <el-dropdown-menu @click="handleUserSelect">
+              <el-dropdown-item data-path="/index/userData">个人信息</el-dropdown-item>
+              <el-dropdown-item>设置</el-dropdown-item>
+              <el-dropdown-item>退出</el-dropdown-item>
+            </el-dropdown-menu>
+            </template>
+        </el-dropdown>
+        
+      </div>
     </el-header>
     <el-aside>
       <el-menu class="left_menu" :collapse="isCollapse" @select="handleSelect" :default-active="activeIndex">
@@ -96,7 +109,16 @@ const handleSelect = (index) => {
     localStorage.setItem('activeMenuIndex', index);
   }
 };
+const handleUserSelect = (event) => {
+  const path = event.target.dataset.path; // 从自定义属性获取路径
+  console.log("获取的路由路径:", path); // 确保输出正确路径
 
+  if (path) {
+    router.push(path); // 执行跳转
+  } else if (event.target.textContent === "退出") { // 处理无路径的情况（如退出）
+    handleLogout();
+  }
+};
 onMounted(() => {
   const storedIndex = localStorage.getItem('activeMenuIndex');
   if (storedIndex) {
@@ -125,6 +147,17 @@ onMounted(() => {
   position: absolute;
   top: 20px;
 }
+.header-content{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+}
+
 .left_menu:not(.el-menu--collapse) {
   /*  离窗口左边和高20px距离，圆角边框，背景为黑色  */
   position: absolute;

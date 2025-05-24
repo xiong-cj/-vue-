@@ -155,7 +155,7 @@ const updateChart = () => {
     legend: {
       data: ["点赞量", "收藏量"],
       top: "5%",
-      left: "right",
+      left: "left",
     },
     xAxis: {
       type: "category",
