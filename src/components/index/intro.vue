@@ -60,30 +60,31 @@ onMounted(() => {
 <style scoped>
 /* 页面背景样式 */
 .page-container {
-
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start; /* 让内容靠近顶部 */
   align-items: center;
-  padding: 0px;
+  padding: 20px;
+  margin-top: 10px; /* 调整页面整体与上方的距离 */
 }
 
 /* 标题样式 */
 .title-container {
-  margin-bottom: 20px;
+  margin-bottom: 10px; 
 }
 .title {
   font-size: 48px;
   font-weight: bold;
   text-align: center;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  margin-top: 0;
 }
 
 /* 正文样式 */
 .text-container {
   background: rgba(255, 255, 255, 0.8);
   border-radius: 15px;
-  padding: 20px;
+  padding: 10px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   max-width: 1000px;
   line-height: 1.8;
@@ -91,11 +92,11 @@ onMounted(() => {
 .paragraph {
   font-size: 16px;
   color: #333;
-  margin-bottom: 20px;
   /* 斜体 */
   font-style: italic;
   /* 加粗 */
   font-weight: bold;
+  margin-bottom: 10px; 
 }
 
 /* 动态文字样式 */

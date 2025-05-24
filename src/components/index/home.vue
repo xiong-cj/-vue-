@@ -6,7 +6,6 @@
         <div style="width: 150px">
           <label>显示数量:</label>
         </div>
-
         <el-select v-model="chartDataCount" @change="updateChart">
           <el-option value="3">3条</el-option>
           <el-option value="5">5条</el-option>
@@ -21,6 +20,7 @@
         class="article-card"
         v-for="item in latestArticles"
         :key="item.id"
+        @click="ArticleDetail(item.id)"
       >
         <template #header>
           <div class="article-title">标题：{{ item.title }}</div>
@@ -32,13 +32,25 @@
         </div>
       </el-card>
     </div>
+    <el-dialog v-model="idArticleDetail">
+      <template #header>
+        <span>文章详情</span>
+      </template>
+      <div class="article-detail">
+        <h3>标题：{{ articleDetail.title }}</h3>
+        <p>内容：{{ articleDetail.content }}</p>
+        <div class="button_container">
+          <el-button type="primary" @click="idArticleDetail = false">关闭</el-button>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
 import * as echarts from "echarts";
 import { ref, onMounted, onUnmounted, watch } from "vue";
-import { articleList } from "@/api/article.js";
+import { articleList, articleInfo} from "@/api/article.js";
 
 // 图表容器引用
 const chartContainer = ref(null);
@@ -150,7 +162,7 @@ const updateChart = () => {
       data: titles,
       axisLabel: {
         interval: 0,
-        rotate: 45,
+        rotate: 20,
       },
     },
     yAxis: {
@@ -200,16 +212,6 @@ const handleResize = () => {
     chartInstance.resize();
   }
 };
-
-// 格式化日期
-const formatDate = (dateString) => {
-  if (!dateString) return "未知";
-  const date = new Date(dateString);
-  return `${date.getFullYear()}-${(date.getMonth() + 1)
-    .toString()
-    .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
-};
-
 // 生命周期钩子
 onMounted(() => {
   fetchArticles(chartDataCount.value);
@@ -221,14 +223,22 @@ onUnmounted(() => {
     chartInstance.dispose();
     chartInstance = null;
   }
-
   window.removeEventListener("resize", handleResize);
 });
-
 // 监听图表数据数量变化
 watch(chartDataCount, (newCount) => {
   fetchArticles(newCount);
 });
+// 文章详情跳转
+const idArticleDetail = ref(false);// 文章详情弹窗
+const articleDetail = ref({});// 文章详情数据
+const ArticleDetail = async(id) => {
+  idArticleDetail.value = true;
+  // 跳转到文章详情页面
+ const res= await articleInfo(id)
+  articleDetail.value= res.data;
+  console.log(articleDetail.value);
+};
 </script>
 
 <style scoped>
@@ -237,6 +247,7 @@ watch(chartDataCount, (newCount) => {
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  
 }
 
 .header {

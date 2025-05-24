@@ -6,7 +6,7 @@
       </div>
     </el-header>
     <el-aside>
-      <el-menu class="left_menu" :collapse="isCollapse" @select="handleSelect">
+      <el-menu class="left_menu" :collapse="isCollapse" @select="handleSelect" :default-active="activeIndex">
         <el-menu-item index="/index/home">
           <el-tooltip content="首页" placement="top-start">
             <el-icon><Location /></el-icon>
@@ -48,11 +48,11 @@
     </el-main>
   </div>
 </template>
-  
+
 <script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-import { ElMessage, ElMessageBox,ElLoading  } from "element-plus";
+import { ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { ElMessage, ElMessageBox, ElLoading  } from "element-plus";
 import {
   Document,
   Location,
@@ -60,11 +60,16 @@ import {
   EditPen,
   SwitchButton,
 } from "@element-plus/icons-vue";
+
 const isCollapse = ref(true);
+const activeIndex = ref('');
+const router = useRouter();
+const route = useRoute();
+
 const toggleCollapse = () => {
   isCollapse.value = !isCollapse.value;
 };
-const router = useRouter();
+
 const handleSelect = (index) => {
   if (index == "/") {
     ElMessageBox.confirm("退出登录？", "确认退出", {
@@ -77,6 +82,7 @@ const handleSelect = (index) => {
           type: "success",
           message: "退出成功",
         });
+        localStorage.clear();
         router.push(index);
       })
       .catch(() => {
@@ -87,8 +93,18 @@ const handleSelect = (index) => {
       });
   } else {
     router.push(index);
+    localStorage.setItem('activeMenuIndex', index);
   }
 };
+
+onMounted(() => {
+  const storedIndex = localStorage.getItem('activeMenuIndex');
+  if (storedIndex) {
+    activeIndex.value = storedIndex;
+  } else {
+    activeIndex.value = route.fullPath;
+  }
+});
 </script>
   
   <style scoped>
@@ -168,14 +184,20 @@ const handleSelect = (index) => {
   right: 20px; /* 窗口右边距 */
   bottom: 20px; /* 窗口底部距离 */
   border-radius: 10px;
-  padding: 20px;
+  padding: 0px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   transition: left 0.3s ease;
+  scrollbar-width: none; /* 隐藏Firefox浏览器的滚动条 */
+  -ms-overflow-style: none; /* 隐藏IE和Edge浏览器的滚动条 */
 }
+/* 滚动条的样式 */
+/* .main::-webkit-scrollbar {
+  display: none;
+} */
 /* 定义过渡动画的 CSS 样式 */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 0.3s ease;
 }
 
 .fade-enter-from,

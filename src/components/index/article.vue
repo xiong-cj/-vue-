@@ -1,5 +1,7 @@
 <template>
   <div class="article-container">
+    <el-button type="primary" @click="isAdd=true">
+      <span class="Font">+添加文章</span></el-button>
     <h2 class="section-title">文章列表</h2>
     <div v-loading="loading" element-loading-text="加载课程中...">
       <el-table
@@ -37,12 +39,25 @@
       >
       </el-pagination>
     </div>
+    <el-dialog v-model="isAdd" title="添加文章">
+      <el-form :model="addForm" label-width="80px">
+        <el-form-item label="标题">
+          <el-input v-model="addForm.title"></el-input>
+        </el-form-item>
+        <el-form-item label="内容">
+          <el-input type="textarea" v-model="addForm.content"></el-input>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="isAdd = false">取 消</el-button>
+        <el-button type="primary" @click="addArticle">确 定</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
   
   <script setup>
-import { articleList } from "@/api/article.js";
-import { getUserInfo } from "@/api/user.js";
+import { articleList,addArticle } from "@/api/article.js";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
@@ -101,9 +116,27 @@ const handleCurrentChange = (val) => {
   currentPage.value = val;
   getArticleList();
 };
+//添加文章
+const isAdd=ref(false); // 是否显示添加文章对话框
+const addForm=ref({
+  title:'',
+  content:''
+})
+const addButton=async()=>{
+
+}
 </script>
   
   <style scoped>
+  .Font{
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 2px;
+    /* 斜体 */
+    font-style: italic;
+    /* 加粗 */
+    font-weight: bold;
+  }
 /* 页面容器样式 */
 .article-container {
   padding: 20px;

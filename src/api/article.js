@@ -12,3 +12,7 @@ export const articleInfo = (id) => {
         }
     })
 }
+//添加文章
+export const addArticle = (data) => {
+    return request.post('/article/add', {params:data})
+}
