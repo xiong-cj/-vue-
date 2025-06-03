@@ -39,10 +39,11 @@
       </div>
     </div>
     <el-dialog v-model="isCourseDetail" title="课程详情" width="400px"> 
+      <img :src="courseDetail.coverImage" width="370px"/>
       <h3>标题：{{ courseDetail.title }}</h3>
       <p>内容：{{ courseDetail.description }}</p>
       <div class="button_container">
-        <el-button type="primary" class="course_button" >进入</el-button>
+        <el-button @click="detail(courseDetail.id)" type="primary" class="course_button" >详细</el-button>
       </div>
     </el-dialog>
   </div>
@@ -51,7 +52,8 @@
 <script setup>
 import { onMounted, ref, computed } from "vue";
 import { courseList, courseInfo } from "@/api/course.js";
-
+import { useRouter } from "vue-router";
+const router = useRouter();
 // 分页参数
 const currentPage = ref(1);//当前页
 const pageSize = ref(6); // 每页显示数量
@@ -105,6 +107,11 @@ const handleCourseClick = async (courseId) => {
   isCourseDetail.value = true;
   const res = await courseInfo(courseId);
   courseDetail.value = res.data;
+};
+//课程详细
+const detail = (id) => {
+  // isCourseDetail.value = false;
+  router.push({ name: "courseDetail", params: { id } });
 };
 </script>
 

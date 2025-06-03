@@ -8,6 +8,7 @@ import intro from "@/components/index/intro.vue";
 import articleDetail from "@/components/article/detail.vue";
 import addArticle from "@/components/article/add.vue";
 import userData from "@/components/user/userData.vue";
+import courseDetail from "@/components/course/detail.vue";
 
 const routes=[
     {
@@ -55,6 +56,11 @@ const routes=[
                 path:'userData',
                 component:userData,
                 name:'userData'
+            },
+            {
+                path:'courseDetail:id',
+                component:courseDetail,
+                name:'courseDetail'
             }
         ]
 
