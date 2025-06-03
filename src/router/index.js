@@ -1,73 +1,63 @@
-import { createRouter,createWebHistory } from "vue-router";
-import login from "@/components/login.vue";
-import index from "@/components/index.vue";
-import home from "@/components/index/home.vue";
-import course from "@/components/index/course.vue";
-import article from "@/components/index/article.vue";
-import intro from "@/components/index/intro.vue";
-import articleDetail from "@/components/article/detail.vue";
-import addArticle from "@/components/article/add.vue";
-import userData from "@/components/user/userData.vue";
-import courseDetail from "@/components/course/detail.vue";
+import { createRouter, createWebHistory } from "vue-router";
 
-const routes=[
+const routes = [
     {
-        path:'/',
-        component:login,
-        name:'login'
+        path: '/',
+        component: () => import('@/components/login.vue'),
+        name: 'login'
     },
-
     {
-        path:'/index',
-        component:index,
-        name:'index',
-        children:[
+        path: '/index',
+        component: () => import('@/components/index.vue'),
+        name: 'index',
+        children: [
             {
-                path:'home',
-                component:home  ,
-                name:'home'
+                path: 'home',
+                component: () => import('@/components/index/home.vue'),
+                name: 'home'
             },
             {
-                path:'course',
-                component:course,
-                name:'course'
+                path: 'course',
+                component: () => import('@/components/index/course.vue'),
+                name: 'course'
             },
             {
-                path:'article',
-                component:article,
-                name:'article'
+                path: 'article',
+                component: () => import('@/components/index/article.vue'),
+                name: 'article'
             },
             {
-                path:'intro',
-                component:intro,
-                name:'intro'
+                path: 'intro',
+                component: () => import('@/components/index/intro.vue'),
+                name: 'intro'
             },
             {
-                path:'articleDetail:id',
-                component:articleDetail,
-                name:'articleDetail'
+                path: 'articleDetail:id',
+                component: () => import('@/components/article/detail.vue'),
+                name: 'articleDetail'
             },
             {
-                path:'addArticle',
-                component:addArticle,
-                name:'addArticle'
+                path: 'addArticle',
+                component: () => import('@/components/article/add.vue'),
+                name: 'addArticle'
             },
             {
-                path:'userData',
-                component:userData,
-                name:'userData'
+                path: 'userData',
+                component: () => import('@/components/user/userData.vue'),
+                name: 'userData'
             },
             {
-                path:'courseDetail:id',
-                component:courseDetail,
-                name:'courseDetail'
+                path: 'courseDetail:id',
+                component: () => import('@/components/course/detail.vue'),
+                name: 'courseDetail'
             }
         ]
+    }
+];
 
-    },
-]
-const router=createRouter({
-    history:createWebHistory(),
+const router = createRouter({
+    history: createWebHistory(),
     routes
-})
+});
+
 export default router;
