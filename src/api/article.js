@@ -16,3 +16,11 @@ export const articleInfo = (id) => {
 export const addArticle = (data) => {
     return request.post('/article/add', {params:data})
 }
+//点赞文章
+export const likeArticle = (data) => {
+    return request.post('/interaction/like', {params:data})
+}
+//收藏文章
+export const collectArticle = (data) => {
+    return request.post('/interaction/favorite', {params:data})
+}

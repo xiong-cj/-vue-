@@ -7,3 +7,6 @@ export const getUserInfo = (id) => {
         }
     });
 }
+export const getPersonInfo = () => {
+    return request.get('/user/userInfo')
+}

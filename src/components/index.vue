@@ -10,42 +10,41 @@
           <template #dropdown>
             <el-dropdown-menu @click="handleUserSelect">
               <el-dropdown-item data-path="/index/userData">个人信息</el-dropdown-item>
-              <el-dropdown-item>设置</el-dropdown-item>
-              <el-dropdown-item>退出</el-dropdown-item>
+              <el-dropdown-item >设置</el-dropdown-item>
+              <el-dropdown-item data-path="/">退出</el-dropdown-item>
             </el-dropdown-menu>
             </template>
         </el-dropdown>
-        
       </div>
     </el-header>
     <el-aside>
       <el-menu class="left_menu" :collapse="isCollapse" @select="handleSelect" :default-active="activeIndex">
         <el-menu-item index="/index/home">
-          <el-tooltip content="首页" placement="top-start">
+          <el-tooltip content="首页" placement="left-start">
             <el-icon><Location /></el-icon>
           </el-tooltip>
           <span>首页</span>
         </el-menu-item>
         <el-menu-item index="/index/intro">
-          <el-tooltip content="介绍" placement="top-start">
+          <el-tooltip content="介绍" placement="left-start">
             <el-icon><Document /></el-icon
           ></el-tooltip>
           <span>介绍</span>
         </el-menu-item>
         <el-menu-item index="/index/course">
-          <el-tooltip content="课程" placement="top-start">
+          <el-tooltip content="课程" placement="left-start">
             <el-icon><MessageBox /></el-icon
           ></el-tooltip>
           <span>课程</span>
         </el-menu-item>
         <el-menu-item index="/index/article">
-          <el-tooltip content="文章" placement="top-start">
+          <el-tooltip content="文章" placement="left-start">
             <el-icon><EditPen /></el-icon
           ></el-tooltip>
           <span>文章</span>
         </el-menu-item>
         <el-menu-item index="/">
-          <el-tooltip content="退出" placement="top-start">
+          <el-tooltip content="退出" placement="left-start">
             <el-icon><SwitchButton /></el-icon
           ></el-tooltip>
           <span>退出</span>
@@ -66,6 +65,7 @@
 import { ref, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { ElMessage, ElMessageBox, ElLoading  } from "element-plus";
+import {useUserStore} from "@/store/userData.js";
 import {
   Document,
   Location,
@@ -73,7 +73,7 @@ import {
   EditPen,
   SwitchButton,
 } from "@element-plus/icons-vue";
-
+const userStore = useUserStore();
 const isCollapse = ref(true);
 const activeIndex = ref('');
 const router = useRouter();
@@ -95,6 +95,7 @@ const handleSelect = (index) => {
           type: "success",
           message: "退出成功",
         });
+        userStore.clearUserInfo();
         localStorage.clear();
         router.push(index);
       })
@@ -111,13 +112,7 @@ const handleSelect = (index) => {
 };
 const handleUserSelect = (event) => {
   const path = event.target.dataset.path; // 从自定义属性获取路径
-  console.log("获取的路由路径:", path); // 确保输出正确路径
-
-  if (path) {
-    router.push(path); // 执行跳转
-  } else if (event.target.textContent === "退出") { // 处理无路径的情况（如退出）
-    handleLogout();
-  }
+    handleSelect(path)
 };
 onMounted(() => {
   const storedIndex = localStorage.getItem('activeMenuIndex');
