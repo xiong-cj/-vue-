@@ -1,4 +1,4 @@
-import request from "@/uitls/axios"
+import request from "@/utils/axios"
 
 // 文章列表
 export const articleList = (data) => {

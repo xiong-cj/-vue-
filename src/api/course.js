@@ -1,4 +1,4 @@
-import request from "@/uitls/axios";
+import request from "@/utils/axios";
 // 课程列表
 export const courseList=(data)=>{
     return request.get('/course/courseList',{params:data})
