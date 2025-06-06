@@ -14,7 +14,7 @@ service.interceptors.request.use(
         return config;
     },
     err => {
-        console.error('请求拦截器发生错误:', error);
+        console.error('请求拦截器发生错误:', err);
         return Promise.reject(err);
     }
 );

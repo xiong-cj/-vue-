@@ -36,7 +36,6 @@ const login = async () => {
   if (res.code === 1) {
     const token = res.data; 
     localStorage.setItem('token', token); 
-    console.log("token",token);
     router.push('/index/home');
   } else {
     ElMessage.error(res.msg);
