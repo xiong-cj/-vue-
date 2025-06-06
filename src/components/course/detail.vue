@@ -218,7 +218,7 @@ const loadComments = async () => {
 
 // 初始加载
 onMounted(async () => {
-  userStore.getUserInfo();
+
   await loadComments();
 });
 

@@ -2,15 +2,22 @@
   <div class="contain">
     <el-header>
       <div class="Collapse_button">
+        
         <el-button @click="toggleCollapse">折叠</el-button>
+    
       </div>
       <div class="header-content">
+       
         <el-dropdown>
-          <span>用户名</span>
+          <div class="user-info">   
+            <el-avatar :src="userStore.userInfo.avatar">
+
+            </el-avatar><span>{{userStore.userInfo.username}}</span>
+          </div>
+        
           <template #dropdown>
             <el-dropdown-menu @click="handleUserSelect">
               <el-dropdown-item data-path="/index/userData">个人信息</el-dropdown-item>
-              <el-dropdown-item >设置</el-dropdown-item>
               <el-dropdown-item data-path="/">退出</el-dropdown-item>
             </el-dropdown-menu>
             </template>
@@ -19,6 +26,7 @@
     </el-header>
     <el-aside>
       <el-menu class="left_menu" :collapse="isCollapse" @select="handleSelect" :default-active="activeIndex">
+
         <el-menu-item index="/index/home">
           <el-tooltip content="首页" placement="left-start">
             <el-icon><Location /></el-icon>
@@ -115,6 +123,7 @@ const handleUserSelect = (event) => {
     handleSelect(path)
 };
 onMounted(() => {
+  userStore.getUserInfo();
   const storedIndex = localStorage.getItem('activeMenuIndex');
   if (storedIndex) {
     activeIndex.value = storedIndex;
@@ -153,6 +162,12 @@ onMounted(() => {
   cursor: pointer;
 }
 
+.user-info {
+  display: flex;         /* 使用弹性布局 */
+  align-items: center;   /* 垂直居中对齐 */
+  gap: 8px;              /* 头像和文本之间的间距 */
+  outline: none;         /* 去除默认轮廓线 */
+}
 .left_menu:not(.el-menu--collapse) {
   /*  离窗口左边和高20px距离，圆角边框，背景为黑色  */
   position: absolute;
