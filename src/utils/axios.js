@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import router from '@/router/index'; 
 const service = axios.create({
     baseURL: '/api', // 设置基础 URL
     timeout: 5000, // 设置请求超时时间
@@ -25,6 +25,7 @@ service.interceptors.response.use(
     },
     err=>{
         alert('服务器异常');
+        router.push('/'); 
         return Promise.reject(err);
     }
 )

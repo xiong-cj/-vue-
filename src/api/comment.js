@@ -9,7 +9,6 @@ export const commentList = (id) => {
   }
 //添加评论
 export const addComment = (data) => {
-    console.log("数据书数据",data)
     return requset.post('/interaction/add', data)
 }
 //删除评论

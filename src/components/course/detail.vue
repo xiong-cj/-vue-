@@ -77,7 +77,7 @@
 <script setup>
 import { ref, watch, onMounted } from "vue";
 import { ElMessage } from "element-plus";
-import { getUserInfo } from "@/api/user.js";
+import { getUserInfo,batchUserInfoByIds } from "@/api/user.js";
 import { courseInfo } from "@/api/course.js";
 import { addComment, commentList, replyList } from "@/api/comment.js";
 import { useUserStore } from "@/store/userData";
@@ -95,31 +95,23 @@ const userStore = useUserStore();
 const fetchReplyList = async (commentId) => {
   try {
     const res = await replyList(commentId);
-    const replies = res.data.records || [];
-
-    // 获取回复的用户信息
-    const userPromises = replies.map(async (item) => {
-      const userData = await getUserInfo(item.userId);
+    const replies = res.data.records;
+    const userIds = [...new Set(replies.map(item => item.userId))];
+    const userDataMap = await batchGetUserInfo(userIds);
+    // 将回复数据和用户信息合并
+    replyDataMap.value[commentId] = replies.map(item => {
+      const userData = userDataMap[item.userId] || {};
       return {
         ...item,
         user: {
-          username: userData.data.username,
-          avatar: userData.data.avatar,
+          username: userData.username || '未知用户',
+          avatar: userData.avatar || 'default-avatar.png',
         },
       };
     });
-
-    const formattedReplies = await Promise.all(userPromises);
-    replyDataMap.value = {
-      ...replyDataMap.value,
-      [commentId]: formattedReplies,
-    };
-
-    return formattedReplies;
-  } catch (error) {
-    console.error("获取回复失败:", error);
-    return [];
-  }
+}catch(err){
+  console.error("获取回复列表失败", err);
+}
 };
 
 // 切换回复列表显示状态
@@ -168,12 +160,12 @@ const isReplay = ref(false); // 是否显示回复对话框
 const openReplyDialog = async(id) => {
   isReplay.value = true; // 打开回复对话框
   activeReplyId.value = id; // 设置当前回复的评论ID
-  await fetchReplyList(id)
+
   console.log("打开回复对话框，评论ID:", id);
 };
 const replyData=ref(""); // 回复内容
 const reply=async()=>{
-  if (!commentData.value.trim()) {
+  if (!replyData.value.trim()) {
     ElMessage.error("评论内容不能为空");
     return;
   }
@@ -184,36 +176,61 @@ const reply=async()=>{
   };
   console.log("回复数据:", Data);
   await addComment(Data); // 调用添加评论接口
-
   isReplay.value = false; // 关闭回复对话框
-  await loadComments(); // 刷新评论列表
+  await fetchReplyList(activeReplyId.value); // 刷新回复列表
 }
 // 加载评论列表
 const loadComments = async () => {
   const newId = route.params.id;
   if (!newId) return;
-
+  
   // 获取课程详情
   const courseData = await courseInfo(newId);
   courseDetail.value = courseData.data;
 
   // 获取评论列表
   const commentData = await commentList(newId);
-  const comments = commentData.data.records.map(async (item) => {
-    const userData = await getUserInfo(item.userId);
+  const comments = commentData.data.records;
+  
+  // 提取所有唯一的userId（去重）
+  const userIds = [...new Set(comments.map(item => item.userId))];
+  
+  // 批量获取用户信息（关键优化点）
+  const userDataMap = await batchGetUserInfo(userIds);
+  
+  // 合并评论和用户信息
+  comment.value = comments.map(item => {
+    const userData = userDataMap[item.userId] || {};
     return {
       ...item,
       user: {
-        username: userData.data.username,
-        avatar: userData.data.avatar,
+        username: userData.username || '未知用户',
+        avatar: userData.avatar || 'default-avatar.png',
       },
     };
   });
-  comment.value = await Promise.all(comments);
 
   // 重置回复数据
   activeReplyId.value = null;
   replyDataMap.value = {};
+};
+// 批量获取用户信息的方法
+const batchGetUserInfo = async (userIds) => {
+  if (userIds.length === 0) return {};
+  
+  try {
+    // 假设后端提供了批量获取用户信息的接口
+    const response = await batchUserInfoByIds(userIds);
+    // 将结果转换为 { userId: userData } 的映射对象
+    return response.data.reduce((map, user) => {
+      map[user.id] = user;
+      console.log("批量获取用户信息", user);
+      return map;
+    }, {});
+  } catch (error) {
+    console.error('批量获取用户信息失败', error);
+    return {};
+  }
 };
 
 // 初始加载
