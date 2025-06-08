@@ -33,7 +33,7 @@ const username = ref('');
 const password = ref('');
 const login = async () => {
   const res = await userLogin({ username: username.value, password: password.value });
-  if (res.code === 1) {
+  if (res.data!==null) {
     const token = res.data; 
     localStorage.setItem('token', token); 
     router.push('/index/home');
