@@ -7,7 +7,7 @@ This template should help get you started developing with Vue 3 in Vite.
 `learn_front` 是一个基于 Vue 3 和 Vite 构建的前端项目，集成了 ElementPlus 组件库、Pinia 状态管理和 Vue Router 路由管理。项目包含文章详情、课程详情、用户信息管理等功能模块，同时提供了文件上传、用户信息获取、评论回复等接口服务。
 
 ## 推荐开发环境
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (请禁用 Vetur)
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
 
 ## 自定义配置
 具体配置可参考 [Vite Configuration Reference](https://vite.dev/config/)。
@@ -27,11 +27,6 @@ npm run dev
 ### 生产环境编译与压缩
 ```sh
 npm run build
-```
-
-### 预览生产环境构建
-```sh
-npm run preview
 ```
 
 ## 项目结构概述
